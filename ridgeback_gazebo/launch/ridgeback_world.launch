@@ -1,10 +1,11 @@
 <launch>
-  <arg name="use_sim_time" default="true" />
+<launch>
+  <name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
   <arg name="headless" default="false" />
   <arg name="world_name" default="$(find ridgeback_gazebo)/worlds/ridgeback_race.world" />
 
-  <!-- Robot Spawn Pose -->
+ <!-- Robot Spawn Pose -->
   <arg name="x" default="0"/>
   <arg name="y" default="0"/>
   <arg name="z" default="0.1"/>
@@ -15,7 +16,7 @@
        See ridgeback_description for details. -->
   <arg name="config" default="$(optenv RIDGEBACK_CONFIG base)" />
 
-  <!-- Launch Gazebo with the specified world -->
+<!-- Launch Gazebo with the specified world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="debug" value="0" />
     <arg name="gui" value="$(arg gui)" />
@@ -33,5 +34,30 @@
     <arg name="yaw" value="$(arg yaw)" />
     <arg name="joystick" value="$(arg joystick)" />
   </include>
+
+
+
+
+
+
+
+<param name="red_box_path" type="str" value="$(find ur5_notebook)/urdf/red_box.urdf"/>
+
+
+<!-- spawn the conveyor_belt in gazebo -->
+  <node name="spawn_conveyor_belt" pkg="gazebo_ros" type="spawn_model" args="-file $(find ur5_notebook)/urdf/conveyor_belt.urdf -urdf -model conveyor_belt" />
+  <!-- spawn the bin in gazebo -->
+  <node name="bin" pkg="gazebo_ros" type="spawn_model" args="-file $(find ur5_notebook)/urdf/bin.urdf -urdf -model bin -y 0.8 -x -0.5 -z 0.05" />
+  <!-- the red blocks spawner node -->
+  <node name="blocks_spawner" pkg="ur5_notebook" type="blocks_spawner" output="screen" />
+
+  <!-- the cylinder poses publisher node -->
+  <node name="blocks_poses_publisher" pkg="ur5_notebook" type="blocks_poses_publisher" output="screen" />
+
+
+
+
+
+
 
 </launch>
